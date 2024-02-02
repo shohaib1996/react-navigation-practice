@@ -1,22 +1,31 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DrawerContentScrollView, DrawerItem, DrawerToggleButton, createDrawerNavigator } from '@react-navigation/drawer';
 import BottomTabNavigator from '../BottomTabNavigator/BottomTabNavigator';
 import { useNavigation } from '@react-navigation/native';
 import Favourites from '../DrawerScreen/Favourites';
 import Profile from '../DrawerScreen/Profile';
+import { Ionicons } from '@expo/vector-icons';
 
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
 
-    const [active, setactive] = useState(false)
+    const [homeActive, setHomeActive] = useState(false)
+    const [videosActive, setVideosActive] = useState(false)
+    const [favouritesActive, setFavouritesActive] = useState(false)
+    const [profileActive, setProfileActive] = useState(false)
+
 
     const navigation = useNavigation()
     // const currentRoute = props.state.routeNames[props.state.index]
 
-    console.log(navigation.isFocused());
+
+
+
+
+
     return (
         <DrawerContentScrollView {...props}>
             <View style={styles.userInfoWrapper}>
@@ -33,23 +42,75 @@ const CustomDrawerContent = (props) => {
             </View>
             <DrawerItem
                 label={"Home"}
-                onPress={() => navigation.navigate("Home")}
-                style={{ backgroundColor: navigation.isFocused()  == "true" ? "#f72585" : "#fff" }}
+                labelStyle={{
+                    color : homeActive ? "white": "black",
+                    marginLeft: -20,
+                }}
+                icon={() => (
+                    <Ionicons name="home" size={24} color={homeActive ? "white" : "black"} />
+                )}
+                onPress={() => {
+                    navigation.navigate("Home");
+                    setHomeActive(true);
+                    setVideosActive(false);
+                    setProfileActive(false)
+                    setFavouritesActive(false)
+                }}
+                style={{ backgroundColor: homeActive ? "#f72585" : "#fff" }}
             />
             <DrawerItem
                 label={"Videos"}
-                onPress={() => navigation.navigate("Videos")}
-                style={{ backgroundColor: navigation.isFocused()  == "true" ? "#f72585" : "#fff" }}
+                labelStyle={{
+                    color : videosActive ? "white": "black",
+                    marginLeft: -20,
+                }}
+                icon={() => (
+                    <Ionicons name="play" size={24} color={videosActive ? "white" : "black"} />
+                )}
+                onPress={() => {
+                    navigation.navigate("Home");
+                    setHomeActive(false);
+                    setVideosActive(true);
+                    setProfileActive(false)
+                    setFavouritesActive(false)
+                }}
+                style={{ backgroundColor: videosActive ? "#f72585" : "#fff" }}
             />
             <DrawerItem
                 label={"Favourites"}
-                onPress={() => navigation.navigate("Favourites")}
-                style={{ backgroundColor: navigation.isFocused()  == "true" ? "#f72585" : "#fff" }}
+                labelStyle={{
+                    color : favouritesActive ? "white": "black",
+                    marginLeft: -20,
+                }}
+                icon={() => (
+                    <Ionicons name="heart" size={24} color={favouritesActive ? "white" : "black"} />
+                )}
+                onPress={() => {
+                    navigation.navigate("Home");
+                    setHomeActive(false);
+                    setVideosActive(false);
+                    setProfileActive(false)
+                    setFavouritesActive(true)
+                }}
+                style={{ backgroundColor: favouritesActive ? "#f72585" : "#fff" }}
             />
             <DrawerItem
                 label={"Profile"}
-                onPress={() => navigation.navigate("Profile")}
-                style={{ backgroundColor: navigation.isFocused()  == "true" ? "#f72585" : "#fff" }}
+                labelStyle={{
+                    color : profileActive ? "white": "black",
+                    marginLeft: -20,
+                }}
+                icon={() => (
+                    <Ionicons name="people" size={24} color={profileActive ? "white" : "black"} />
+                )}
+                onPress={() => {
+                    navigation.navigate("Home");
+                    setHomeActive(false);
+                    setVideosActive(false);
+                    setProfileActive(true)
+                    setFavouritesActive(false)
+                }}
+                style={{ backgroundColor: profileActive ? "#f72585" : "#fff" }}
             />
 
         </DrawerContentScrollView>
@@ -77,7 +138,7 @@ const DrawerNavigator = () => {
                     title: "",
                 }}
             />
-            
+
             <Drawer.Screen name="Favourites" component={Favourites} />
             <Drawer.Screen name="Profile" component={Profile} />
 
